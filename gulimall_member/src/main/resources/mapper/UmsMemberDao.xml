@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gyq.member.dao.UmsMemberDao">
+
+    <resultMap type="com.gyq.member.entity.UmsMember" id="UmsMemberMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="levelId" column="level_id" jdbcType="INTEGER"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
+        <result property="mobile" column="mobile" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="header" column="header" jdbcType="VARCHAR"/>
+        <result property="gender" column="gender" jdbcType="INTEGER"/>
+        <result property="birth" column="birth" jdbcType="TIMESTAMP"/>
+        <result property="city" column="city" jdbcType="VARCHAR"/>
+        <result property="job" column="job" jdbcType="VARCHAR"/>
+        <result property="sign" column="sign" jdbcType="VARCHAR"/>
+        <result property="sourceType" column="source_type" jdbcType="INTEGER"/>
+        <result property="integration" column="integration" jdbcType="INTEGER"/>
+        <result property="growth" column="growth" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!-- 批量插入 -->
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into gulimall_ums.ums_member(level_id, username, password, nickname, mobile, email, header, gender, birth, city, job, sign, source_type, integration, growth, status, create_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.levelId}, #{entity.username}, #{entity.password}, #{entity.nickname}, #{entity.mobile}, #{entity.email}, #{entity.header}, #{entity.gender}, #{entity.birth}, #{entity.city}, #{entity.job}, #{entity.sign}, #{entity.sourceType}, #{entity.integration}, #{entity.growth}, #{entity.status}, #{entity.createTime})
+        </foreach>
+    </insert>
+    <!-- 批量插入或按主键更新 -->
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into gulimall_ums.ums_member(level_id, username, password, nickname, mobile, email, header, gender, birth, city, job, sign, source_type, integration, growth, status, create_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.levelId}, #{entity.username}, #{entity.password}, #{entity.nickname}, #{entity.mobile}, #{entity.email}, #{entity.header}, #{entity.gender}, #{entity.birth}, #{entity.city}, #{entity.job}, #{entity.sign}, #{entity.sourceType}, #{entity.integration}, #{entity.growth}, #{entity.status}, #{entity.createTime})
+        </foreach>
+        on duplicate key update
+         level_id = values(level_id) , username = values(username) , password = values(password) , nickname = values(nickname) , mobile = values(mobile) , email = values(email) , header = values(header) , gender = values(gender) , birth = values(birth) , city = values(city) , job = values(job) , sign = values(sign) , source_type = values(source_type) , integration = values(integration) , growth = values(growth) , status = values(status) , create_time = values(create_time)     </insert>
+
+</mapper>
+

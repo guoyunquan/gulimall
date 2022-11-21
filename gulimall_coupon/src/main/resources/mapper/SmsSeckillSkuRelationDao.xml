@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gyq.coupon.dao.SmsSeckillSkuRelationDao">
+
+    <resultMap type="com.gyq.coupon.entity.SmsSeckillSkuRelation" id="SmsSeckillSkuRelationMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="promotionId" column="promotion_id" jdbcType="INTEGER"/>
+        <result property="promotionSessionId" column="promotion_session_id" jdbcType="INTEGER"/>
+        <result property="skuId" column="sku_id" jdbcType="INTEGER"/>
+        <result property="seckillPrice" column="seckill_price" jdbcType="VARCHAR"/>
+        <result property="seckillCount" column="seckill_count" jdbcType="VARCHAR"/>
+        <result property="seckillLimit" column="seckill_limit" jdbcType="VARCHAR"/>
+        <result property="seckillSort" column="seckill_sort" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!-- 批量插入 -->
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into gulimall_sms.sms_seckill_sku_relation(promotion_id, promotion_session_id, sku_id, seckill_price, seckill_count, seckill_limit, seckill_sort)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.promotionId}, #{entity.promotionSessionId}, #{entity.skuId}, #{entity.seckillPrice}, #{entity.seckillCount}, #{entity.seckillLimit}, #{entity.seckillSort})
+        </foreach>
+    </insert>
+    <!-- 批量插入或按主键更新 -->
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into gulimall_sms.sms_seckill_sku_relation(promotion_id, promotion_session_id, sku_id, seckill_price, seckill_count, seckill_limit, seckill_sort)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.promotionId}, #{entity.promotionSessionId}, #{entity.skuId}, #{entity.seckillPrice}, #{entity.seckillCount}, #{entity.seckillLimit}, #{entity.seckillSort})
+        </foreach>
+        on duplicate key update
+         promotion_id = values(promotion_id) , promotion_session_id = values(promotion_session_id) , sku_id = values(sku_id) , seckill_price = values(seckill_price) , seckill_count = values(seckill_count) , seckill_limit = values(seckill_limit) , seckill_sort = values(seckill_sort)     </insert>
+
+</mapper>
+

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gyq.member.dao.UmsMemberLevelDao">
+
+    <resultMap type="com.gyq.member.entity.UmsMemberLevel" id="UmsMemberLevelMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="growthPoint" column="growth_point" jdbcType="INTEGER"/>
+        <result property="defaultStatus" column="default_status" jdbcType="INTEGER"/>
+        <result property="freeFreightPoint" column="free_freight_point" jdbcType="NUMERIC"/>
+        <result property="commentGrowthPoint" column="comment_growth_point" jdbcType="INTEGER"/>
+        <result property="priviledgeFreeFreight" column="priviledge_free_freight" jdbcType="INTEGER"/>
+        <result property="priviledgeMemberPrice" column="priviledge_member_price" jdbcType="INTEGER"/>
+        <result property="priviledgeBirthday" column="priviledge_birthday" jdbcType="INTEGER"/>
+        <result property="note" column="note" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 批量插入 -->
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into gulimall_ums.ums_member_level(name, growth_point, default_status, free_freight_point, comment_growth_point, priviledge_free_freight, priviledge_member_price, priviledge_birthday, note)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.name}, #{entity.growthPoint}, #{entity.defaultStatus}, #{entity.freeFreightPoint}, #{entity.commentGrowthPoint}, #{entity.priviledgeFreeFreight}, #{entity.priviledgeMemberPrice}, #{entity.priviledgeBirthday}, #{entity.note})
+        </foreach>
+    </insert>
+    <!-- 批量插入或按主键更新 -->
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into gulimall_ums.ums_member_level(name, growth_point, default_status, free_freight_point, comment_growth_point, priviledge_free_freight, priviledge_member_price, priviledge_birthday, note)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.name}, #{entity.growthPoint}, #{entity.defaultStatus}, #{entity.freeFreightPoint}, #{entity.commentGrowthPoint}, #{entity.priviledgeFreeFreight}, #{entity.priviledgeMemberPrice}, #{entity.priviledgeBirthday}, #{entity.note})
+        </foreach>
+        on duplicate key update
+         name = values(name) , growth_point = values(growth_point) , default_status = values(default_status) , free_freight_point = values(free_freight_point) , comment_growth_point = values(comment_growth_point) , priviledge_free_freight = values(priviledge_free_freight) , priviledge_member_price = values(priviledge_member_price) , priviledge_birthday = values(priviledge_birthday) , note = values(note)     </insert>
+
+</mapper>
+

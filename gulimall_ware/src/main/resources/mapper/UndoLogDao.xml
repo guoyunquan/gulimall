@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gyq.ware.dao.UndoLogDao">
+
+    <resultMap type="com.gyq.ware.entity.UndoLog" id="UndoLogMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="branchId" column="branch_id" jdbcType="INTEGER"/>
+        <result property="xid" column="xid" jdbcType="VARCHAR"/>
+        <result property="context" column="context" jdbcType="VARCHAR"/>
+        <result property="rollbackInfo" column="rollback_info" jdbcType="VARCHAR"/>
+        <result property="logStatus" column="log_status" jdbcType="INTEGER"/>
+        <result property="logCreated" column="log_created" jdbcType="TIMESTAMP"/>
+        <result property="logModified" column="log_modified" jdbcType="TIMESTAMP"/>
+        <result property="ext" column="ext" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 批量插入 -->
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into gulimall_wms.undo_log(branch_id, xid, context, rollback_info, log_status, log_created, log_modified, ext)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.branchId}, #{entity.xid}, #{entity.context}, #{entity.rollbackInfo}, #{entity.logStatus}, #{entity.logCreated}, #{entity.logModified}, #{entity.ext})
+        </foreach>
+    </insert>
+    <!-- 批量插入或按主键更新 -->
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into gulimall_wms.undo_log(branch_id, xid, context, rollback_info, log_status, log_created, log_modified, ext)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.branchId}, #{entity.xid}, #{entity.context}, #{entity.rollbackInfo}, #{entity.logStatus}, #{entity.logCreated}, #{entity.logModified}, #{entity.ext})
+        </foreach>
+        on duplicate key update
+         branch_id = values(branch_id) , xid = values(xid) , context = values(context) , rollback_info = values(rollback_info) , log_status = values(log_status) , log_created = values(log_created) , log_modified = values(log_modified) , ext = values(ext)     </insert>
+
+</mapper>
+

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gyq.product.dao.PmsSpuImagesDao">
+
+    <resultMap type="com.gyq.product.entity.PmsSpuImages" id="PmsSpuImagesMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="spuId" column="spu_id" jdbcType="INTEGER"/>
+        <result property="imgName" column="img_name" jdbcType="VARCHAR"/>
+        <result property="imgUrl" column="img_url" jdbcType="VARCHAR"/>
+        <result property="imgSort" column="img_sort" jdbcType="INTEGER"/>
+        <result property="defaultImg" column="default_img" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!-- 批量插入 -->
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into gulimall_pms.pms_spu_images(spu_id, img_name, img_url, img_sort, default_img)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.spuId}, #{entity.imgName}, #{entity.imgUrl}, #{entity.imgSort}, #{entity.defaultImg})
+        </foreach>
+    </insert>
+    <!-- 批量插入或按主键更新 -->
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into gulimall_pms.pms_spu_images(spu_id, img_name, img_url, img_sort, default_img)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.spuId}, #{entity.imgName}, #{entity.imgUrl}, #{entity.imgSort}, #{entity.defaultImg})
+        </foreach>
+        on duplicate key update
+         spu_id = values(spu_id) , img_name = values(img_name) , img_url = values(img_url) , img_sort = values(img_sort) , default_img = values(default_img)     </insert>
+
+</mapper>
+

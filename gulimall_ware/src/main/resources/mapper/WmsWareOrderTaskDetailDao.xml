@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gyq.ware.dao.WmsWareOrderTaskDetailDao">
+
+    <resultMap type="com.gyq.ware.entity.WmsWareOrderTaskDetail" id="WmsWareOrderTaskDetailMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="skuId" column="sku_id" jdbcType="INTEGER"/>
+        <result property="skuName" column="sku_name" jdbcType="VARCHAR"/>
+        <result property="skuNum" column="sku_num" jdbcType="INTEGER"/>
+        <result property="taskId" column="task_id" jdbcType="INTEGER"/>
+        <result property="wareId" column="ware_id" jdbcType="INTEGER"/>
+        <result property="lockStatus" column="lock_status" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!-- 批量插入 -->
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into gulimall_wms.wms_ware_order_task_detail(sku_id, sku_name, sku_num, task_id, ware_id, lock_status)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.skuId}, #{entity.skuName}, #{entity.skuNum}, #{entity.taskId}, #{entity.wareId}, #{entity.lockStatus})
+        </foreach>
+    </insert>
+    <!-- 批量插入或按主键更新 -->
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into gulimall_wms.wms_ware_order_task_detail(sku_id, sku_name, sku_num, task_id, ware_id, lock_status)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.skuId}, #{entity.skuName}, #{entity.skuNum}, #{entity.taskId}, #{entity.wareId}, #{entity.lockStatus})
+        </foreach>
+        on duplicate key update
+         sku_id = values(sku_id) , sku_name = values(sku_name) , sku_num = values(sku_num) , task_id = values(task_id) , ware_id = values(ware_id) , lock_status = values(lock_status)     </insert>
+
+</mapper>
+

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gyq.member.dao.UmsMemberStatisticsInfoDao">
+
+    <resultMap type="com.gyq.member.entity.UmsMemberStatisticsInfo" id="UmsMemberStatisticsInfoMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="memberId" column="member_id" jdbcType="INTEGER"/>
+        <result property="consumeAmount" column="consume_amount" jdbcType="NUMERIC"/>
+        <result property="couponAmount" column="coupon_amount" jdbcType="NUMERIC"/>
+        <result property="orderCount" column="order_count" jdbcType="INTEGER"/>
+        <result property="couponCount" column="coupon_count" jdbcType="INTEGER"/>
+        <result property="commentCount" column="comment_count" jdbcType="INTEGER"/>
+        <result property="returnOrderCount" column="return_order_count" jdbcType="INTEGER"/>
+        <result property="loginCount" column="login_count" jdbcType="INTEGER"/>
+        <result property="attendCount" column="attend_count" jdbcType="INTEGER"/>
+        <result property="fansCount" column="fans_count" jdbcType="INTEGER"/>
+        <result property="collectProductCount" column="collect_product_count" jdbcType="INTEGER"/>
+        <result property="collectSubjectCount" column="collect_subject_count" jdbcType="INTEGER"/>
+        <result property="collectCommentCount" column="collect_comment_count" jdbcType="INTEGER"/>
+        <result property="inviteFriendCount" column="invite_friend_count" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!-- 批量插入 -->
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into gulimall_ums.ums_member_statistics_info(member_id, consume_amount, coupon_amount, order_count, coupon_count, comment_count, return_order_count, login_count, attend_count, fans_count, collect_product_count, collect_subject_count, collect_comment_count, invite_friend_count)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.memberId}, #{entity.consumeAmount}, #{entity.couponAmount}, #{entity.orderCount}, #{entity.couponCount}, #{entity.commentCount}, #{entity.returnOrderCount}, #{entity.loginCount}, #{entity.attendCount}, #{entity.fansCount}, #{entity.collectProductCount}, #{entity.collectSubjectCount}, #{entity.collectCommentCount}, #{entity.inviteFriendCount})
+        </foreach>
+    </insert>
+    <!-- 批量插入或按主键更新 -->
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into gulimall_ums.ums_member_statistics_info(member_id, consume_amount, coupon_amount, order_count, coupon_count, comment_count, return_order_count, login_count, attend_count, fans_count, collect_product_count, collect_subject_count, collect_comment_count, invite_friend_count)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.memberId}, #{entity.consumeAmount}, #{entity.couponAmount}, #{entity.orderCount}, #{entity.couponCount}, #{entity.commentCount}, #{entity.returnOrderCount}, #{entity.loginCount}, #{entity.attendCount}, #{entity.fansCount}, #{entity.collectProductCount}, #{entity.collectSubjectCount}, #{entity.collectCommentCount}, #{entity.inviteFriendCount})
+        </foreach>
+        on duplicate key update
+         member_id = values(member_id) , consume_amount = values(consume_amount) , coupon_amount = values(coupon_amount) , order_count = values(order_count) , coupon_count = values(coupon_count) , comment_count = values(comment_count) , return_order_count = values(return_order_count) , login_count = values(login_count) , attend_count = values(attend_count) , fans_count = values(fans_count) , collect_product_count = values(collect_product_count) , collect_subject_count = values(collect_subject_count) , collect_comment_count = values(collect_comment_count) , invite_friend_count = values(invite_friend_count)     </insert>
+
+</mapper>
+

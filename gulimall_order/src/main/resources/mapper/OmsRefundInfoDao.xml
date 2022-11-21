@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gyq.order.dao.OmsRefundInfoDao">
+
+    <resultMap type="com.gyq.order.entity.OmsRefundInfo" id="OmsRefundInfoMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="orderReturnId" column="order_return_id" jdbcType="INTEGER"/>
+        <result property="refund" column="refund" jdbcType="NUMERIC"/>
+        <result property="refundSn" column="refund_sn" jdbcType="VARCHAR"/>
+        <result property="refundStatus" column="refund_status" jdbcType="INTEGER"/>
+        <result property="refundChannel" column="refund_channel" jdbcType="INTEGER"/>
+        <result property="refundContent" column="refund_content" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 批量插入 -->
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into gulimall_oms.oms_refund_info(order_return_id, refund, refund_sn, refund_status, refund_channel, refund_content)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.orderReturnId}, #{entity.refund}, #{entity.refundSn}, #{entity.refundStatus}, #{entity.refundChannel}, #{entity.refundContent})
+        </foreach>
+    </insert>
+    <!-- 批量插入或按主键更新 -->
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into gulimall_oms.oms_refund_info(order_return_id, refund, refund_sn, refund_status, refund_channel, refund_content)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.orderReturnId}, #{entity.refund}, #{entity.refundSn}, #{entity.refundStatus}, #{entity.refundChannel}, #{entity.refundContent})
+        </foreach>
+        on duplicate key update
+         order_return_id = values(order_return_id) , refund = values(refund) , refund_sn = values(refund_sn) , refund_status = values(refund_status) , refund_channel = values(refund_channel) , refund_content = values(refund_content)     </insert>
+
+</mapper>
+

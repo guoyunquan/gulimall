@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gyq.member.dao.UmsIntegrationChangeHistoryDao">
+
+    <resultMap type="com.gyq.member.entity.UmsIntegrationChangeHistory" id="UmsIntegrationChangeHistoryMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="memberId" column="member_id" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="changeCount" column="change_count" jdbcType="INTEGER"/>
+        <result property="note" column="note" jdbcType="VARCHAR"/>
+        <result property="sourceTyoe" column="source_tyoe" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!-- 批量插入 -->
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into gulimall_ums.ums_integration_change_history(member_id, create_time, change_count, note, source_tyoe)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.memberId}, #{entity.createTime}, #{entity.changeCount}, #{entity.note}, #{entity.sourceTyoe})
+        </foreach>
+    </insert>
+    <!-- 批量插入或按主键更新 -->
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into gulimall_ums.ums_integration_change_history(member_id, create_time, change_count, note, source_tyoe)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.memberId}, #{entity.createTime}, #{entity.changeCount}, #{entity.note}, #{entity.sourceTyoe})
+        </foreach>
+        on duplicate key update
+         member_id = values(member_id) , create_time = values(create_time) , change_count = values(change_count) , note = values(note) , source_tyoe = values(source_tyoe)     </insert>
+
+</mapper>
+

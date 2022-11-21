@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gyq.order.dao.OmsPaymentInfoDao">
+
+    <resultMap type="com.gyq.order.entity.OmsPaymentInfo" id="OmsPaymentInfoMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="orderSn" column="order_sn" jdbcType="VARCHAR"/>
+        <result property="orderId" column="order_id" jdbcType="INTEGER"/>
+        <result property="alipayTradeNo" column="alipay_trade_no" jdbcType="VARCHAR"/>
+        <result property="totalAmount" column="total_amount" jdbcType="NUMERIC"/>
+        <result property="subject" column="subject" jdbcType="VARCHAR"/>
+        <result property="paymentStatus" column="payment_status" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="confirmTime" column="confirm_time" jdbcType="TIMESTAMP"/>
+        <result property="callbackContent" column="callback_content" jdbcType="VARCHAR"/>
+        <result property="callbackTime" column="callback_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!-- 批量插入 -->
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into gulimall_oms.oms_payment_info(order_sn, order_id, alipay_trade_no, total_amount, subject, payment_status, create_time, confirm_time, callback_content, callback_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.orderSn}, #{entity.orderId}, #{entity.alipayTradeNo}, #{entity.totalAmount}, #{entity.subject}, #{entity.paymentStatus}, #{entity.createTime}, #{entity.confirmTime}, #{entity.callbackContent}, #{entity.callbackTime})
+        </foreach>
+    </insert>
+    <!-- 批量插入或按主键更新 -->
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into gulimall_oms.oms_payment_info(order_sn, order_id, alipay_trade_no, total_amount, subject, payment_status, create_time, confirm_time, callback_content, callback_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.orderSn}, #{entity.orderId}, #{entity.alipayTradeNo}, #{entity.totalAmount}, #{entity.subject}, #{entity.paymentStatus}, #{entity.createTime}, #{entity.confirmTime}, #{entity.callbackContent}, #{entity.callbackTime})
+        </foreach>
+        on duplicate key update
+         order_sn = values(order_sn) , order_id = values(order_id) , alipay_trade_no = values(alipay_trade_no) , total_amount = values(total_amount) , subject = values(subject) , payment_status = values(payment_status) , create_time = values(create_time) , confirm_time = values(confirm_time) , callback_content = values(callback_content) , callback_time = values(callback_time)     </insert>
+
+</mapper>
+

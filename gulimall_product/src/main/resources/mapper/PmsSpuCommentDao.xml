@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gyq.product.dao.PmsSpuCommentDao">
+
+    <resultMap type="com.gyq.product.entity.PmsSpuComment" id="PmsSpuCommentMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="skuId" column="sku_id" jdbcType="INTEGER"/>
+        <result property="spuId" column="spu_id" jdbcType="INTEGER"/>
+        <result property="spuName" column="spu_name" jdbcType="VARCHAR"/>
+        <result property="memberNickName" column="member_nick_name" jdbcType="VARCHAR"/>
+        <result property="star" column="star" jdbcType="INTEGER"/>
+        <result property="memberIp" column="member_ip" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="showStatus" column="show_status" jdbcType="INTEGER"/>
+        <result property="spuAttributes" column="spu_attributes" jdbcType="VARCHAR"/>
+        <result property="likesCount" column="likes_count" jdbcType="INTEGER"/>
+        <result property="replyCount" column="reply_count" jdbcType="INTEGER"/>
+        <result property="resources" column="resources" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="memberIcon" column="member_icon" jdbcType="VARCHAR"/>
+        <result property="commentType" column="comment_type" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!-- 批量插入 -->
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into gulimall_pms.pms_spu_comment(sku_id, spu_id, spu_name, member_nick_name, star, member_ip, create_time, show_status, spu_attributes, likes_count, reply_count, resources, content, member_icon, comment_type)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.skuId}, #{entity.spuId}, #{entity.spuName}, #{entity.memberNickName}, #{entity.star}, #{entity.memberIp}, #{entity.createTime}, #{entity.showStatus}, #{entity.spuAttributes}, #{entity.likesCount}, #{entity.replyCount}, #{entity.resources}, #{entity.content}, #{entity.memberIcon}, #{entity.commentType})
+        </foreach>
+    </insert>
+    <!-- 批量插入或按主键更新 -->
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into gulimall_pms.pms_spu_comment(sku_id, spu_id, spu_name, member_nick_name, star, member_ip, create_time, show_status, spu_attributes, likes_count, reply_count, resources, content, member_icon, comment_type)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.skuId}, #{entity.spuId}, #{entity.spuName}, #{entity.memberNickName}, #{entity.star}, #{entity.memberIp}, #{entity.createTime}, #{entity.showStatus}, #{entity.spuAttributes}, #{entity.likesCount}, #{entity.replyCount}, #{entity.resources}, #{entity.content}, #{entity.memberIcon}, #{entity.commentType})
+        </foreach>
+        on duplicate key update
+         sku_id = values(sku_id) , spu_id = values(spu_id) , spu_name = values(spu_name) , member_nick_name = values(member_nick_name) , star = values(star) , member_ip = values(member_ip) , create_time = values(create_time) , show_status = values(show_status) , spu_attributes = values(spu_attributes) , likes_count = values(likes_count) , reply_count = values(reply_count) , resources = values(resources) , content = values(content) , member_icon = values(member_icon) , comment_type = values(comment_type)     </insert>
+
+</mapper>
+

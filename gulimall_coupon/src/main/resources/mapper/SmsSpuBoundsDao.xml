@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gyq.coupon.dao.SmsSpuBoundsDao">
+
+    <resultMap type="com.gyq.coupon.entity.SmsSpuBounds" id="SmsSpuBoundsMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="spuId" column="spu_id" jdbcType="INTEGER"/>
+        <result property="growBounds" column="grow_bounds" jdbcType="NUMERIC"/>
+        <result property="buyBounds" column="buy_bounds" jdbcType="NUMERIC"/>
+        <result property="work" column="work" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!-- 批量插入 -->
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into gulimall_sms.sms_spu_bounds(spu_id, grow_bounds, buy_bounds, work)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.spuId}, #{entity.growBounds}, #{entity.buyBounds}, #{entity.work})
+        </foreach>
+    </insert>
+    <!-- 批量插入或按主键更新 -->
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into gulimall_sms.sms_spu_bounds(spu_id, grow_bounds, buy_bounds, work)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.spuId}, #{entity.growBounds}, #{entity.buyBounds}, #{entity.work})
+        </foreach>
+        on duplicate key update
+         spu_id = values(spu_id) , grow_bounds = values(grow_bounds) , buy_bounds = values(buy_bounds) , work = values(work)     </insert>
+
+</mapper>
+

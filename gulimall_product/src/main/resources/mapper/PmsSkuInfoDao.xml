@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gyq.product.dao.PmsSkuInfoDao">
+
+    <resultMap type="com.gyq.product.entity.PmsSkuInfo" id="PmsSkuInfoMap">
+        <result property="skuId" column="sku_id" jdbcType="INTEGER"/>
+        <result property="spuId" column="spu_id" jdbcType="INTEGER"/>
+        <result property="skuName" column="sku_name" jdbcType="VARCHAR"/>
+        <result property="skuDesc" column="sku_desc" jdbcType="VARCHAR"/>
+        <result property="catalogId" column="catalog_id" jdbcType="INTEGER"/>
+        <result property="brandId" column="brand_id" jdbcType="INTEGER"/>
+        <result property="skuDefaultImg" column="sku_default_img" jdbcType="VARCHAR"/>
+        <result property="skuTitle" column="sku_title" jdbcType="VARCHAR"/>
+        <result property="skuSubtitle" column="sku_subtitle" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="NUMERIC"/>
+        <result property="saleCount" column="sale_count" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!-- 批量插入 -->
+    <insert id="insertBatch" keyProperty="skuId" useGeneratedKeys="true">
+        insert into gulimall_pms.pms_sku_info(spu_id, sku_name, sku_desc, catalog_id, brand_id, sku_default_img, sku_title, sku_subtitle, price, sale_count)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.spuId}, #{entity.skuName}, #{entity.skuDesc}, #{entity.catalogId}, #{entity.brandId}, #{entity.skuDefaultImg}, #{entity.skuTitle}, #{entity.skuSubtitle}, #{entity.price}, #{entity.saleCount})
+        </foreach>
+    </insert>
+    <!-- 批量插入或按主键更新 -->
+    <insert id="insertOrUpdateBatch" keyProperty="skuId" useGeneratedKeys="true">
+        insert into gulimall_pms.pms_sku_info(spu_id, sku_name, sku_desc, catalog_id, brand_id, sku_default_img, sku_title, sku_subtitle, price, sale_count)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.spuId}, #{entity.skuName}, #{entity.skuDesc}, #{entity.catalogId}, #{entity.brandId}, #{entity.skuDefaultImg}, #{entity.skuTitle}, #{entity.skuSubtitle}, #{entity.price}, #{entity.saleCount})
+        </foreach>
+        on duplicate key update
+         spu_id = values(spu_id) , sku_name = values(sku_name) , sku_desc = values(sku_desc) , catalog_id = values(catalog_id) , brand_id = values(brand_id) , sku_default_img = values(sku_default_img) , sku_title = values(sku_title) , sku_subtitle = values(sku_subtitle) , price = values(price) , sale_count = values(sale_count)     </insert>
+
+</mapper>
+

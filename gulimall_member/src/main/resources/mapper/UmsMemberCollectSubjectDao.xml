@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gyq.member.dao.UmsMemberCollectSubjectDao">
+
+    <resultMap type="com.gyq.member.entity.UmsMemberCollectSubject" id="UmsMemberCollectSubjectMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="subjectId" column="subject_id" jdbcType="INTEGER"/>
+        <result property="subjectName" column="subject_name" jdbcType="VARCHAR"/>
+        <result property="subjectImg" column="subject_img" jdbcType="VARCHAR"/>
+        <result property="subjectUrll" column="subject_urll" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 批量插入 -->
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into gulimall_ums.ums_member_collect_subject(subject_id, subject_name, subject_img, subject_urll)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.subjectId}, #{entity.subjectName}, #{entity.subjectImg}, #{entity.subjectUrll})
+        </foreach>
+    </insert>
+    <!-- 批量插入或按主键更新 -->
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into gulimall_ums.ums_member_collect_subject(subject_id, subject_name, subject_img, subject_urll)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.subjectId}, #{entity.subjectName}, #{entity.subjectImg}, #{entity.subjectUrll})
+        </foreach>
+        on duplicate key update
+         subject_id = values(subject_id) , subject_name = values(subject_name) , subject_img = values(subject_img) , subject_urll = values(subject_urll)     </insert>
+
+</mapper>
+

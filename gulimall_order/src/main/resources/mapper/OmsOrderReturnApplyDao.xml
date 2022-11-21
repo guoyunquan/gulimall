@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gyq.order.dao.OmsOrderReturnApplyDao">
+
+    <resultMap type="com.gyq.order.entity.OmsOrderReturnApply" id="OmsOrderReturnApplyMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="orderId" column="order_id" jdbcType="INTEGER"/>
+        <result property="skuId" column="sku_id" jdbcType="INTEGER"/>
+        <result property="orderSn" column="order_sn" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="memberUsername" column="member_username" jdbcType="VARCHAR"/>
+        <result property="returnAmount" column="return_amount" jdbcType="NUMERIC"/>
+        <result property="returnName" column="return_name" jdbcType="VARCHAR"/>
+        <result property="returnPhone" column="return_phone" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="handleTime" column="handle_time" jdbcType="TIMESTAMP"/>
+        <result property="skuImg" column="sku_img" jdbcType="VARCHAR"/>
+        <result property="skuName" column="sku_name" jdbcType="VARCHAR"/>
+        <result property="skuBrand" column="sku_brand" jdbcType="VARCHAR"/>
+        <result property="skuAttrsVals" column="sku_attrs_vals" jdbcType="VARCHAR"/>
+        <result property="skuCount" column="sku_count" jdbcType="INTEGER"/>
+        <result property="skuPrice" column="sku_price" jdbcType="NUMERIC"/>
+        <result property="skuRealPrice" column="sku_real_price" jdbcType="NUMERIC"/>
+        <result property="reason" column="reason" jdbcType="VARCHAR"/>
+        <result property="description述" column="description述" jdbcType="VARCHAR"/>
+        <result property="descPics" column="desc_pics" jdbcType="VARCHAR"/>
+        <result property="handleNote" column="handle_note" jdbcType="VARCHAR"/>
+        <result property="handleMan" column="handle_man" jdbcType="VARCHAR"/>
+        <result property="receiveMan" column="receive_man" jdbcType="VARCHAR"/>
+        <result property="receiveTime" column="receive_time" jdbcType="TIMESTAMP"/>
+        <result property="receiveNote" column="receive_note" jdbcType="VARCHAR"/>
+        <result property="receivePhone" column="receive_phone" jdbcType="VARCHAR"/>
+        <result property="companyAddress" column="company_address" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 批量插入 -->
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into gulimall_oms.oms_order_return_apply(order_id, sku_id, order_sn, create_time, member_username, return_amount, return_name, return_phone, status, handle_time, sku_img, sku_name, sku_brand, sku_attrs_vals, sku_count, sku_price, sku_real_price, reason, description述, desc_pics, handle_note, handle_man, receive_man, receive_time, receive_note, receive_phone, company_address)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.orderId}, #{entity.skuId}, #{entity.orderSn}, #{entity.createTime}, #{entity.memberUsername}, #{entity.returnAmount}, #{entity.returnName}, #{entity.returnPhone}, #{entity.status}, #{entity.handleTime}, #{entity.skuImg}, #{entity.skuName}, #{entity.skuBrand}, #{entity.skuAttrsVals}, #{entity.skuCount}, #{entity.skuPrice}, #{entity.skuRealPrice}, #{entity.reason}, #{entity.description述}, #{entity.descPics}, #{entity.handleNote}, #{entity.handleMan}, #{entity.receiveMan}, #{entity.receiveTime}, #{entity.receiveNote}, #{entity.receivePhone}, #{entity.companyAddress})
+        </foreach>
+    </insert>
+    <!-- 批量插入或按主键更新 -->
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into gulimall_oms.oms_order_return_apply(order_id, sku_id, order_sn, create_time, member_username, return_amount, return_name, return_phone, status, handle_time, sku_img, sku_name, sku_brand, sku_attrs_vals, sku_count, sku_price, sku_real_price, reason, description述, desc_pics, handle_note, handle_man, receive_man, receive_time, receive_note, receive_phone, company_address)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.orderId}, #{entity.skuId}, #{entity.orderSn}, #{entity.createTime}, #{entity.memberUsername}, #{entity.returnAmount}, #{entity.returnName}, #{entity.returnPhone}, #{entity.status}, #{entity.handleTime}, #{entity.skuImg}, #{entity.skuName}, #{entity.skuBrand}, #{entity.skuAttrsVals}, #{entity.skuCount}, #{entity.skuPrice}, #{entity.skuRealPrice}, #{entity.reason}, #{entity.description述}, #{entity.descPics}, #{entity.handleNote}, #{entity.handleMan}, #{entity.receiveMan}, #{entity.receiveTime}, #{entity.receiveNote}, #{entity.receivePhone}, #{entity.companyAddress})
+        </foreach>
+        on duplicate key update
+         order_id = values(order_id) , sku_id = values(sku_id) , order_sn = values(order_sn) , create_time = values(create_time) , member_username = values(member_username) , return_amount = values(return_amount) , return_name = values(return_name) , return_phone = values(return_phone) , status = values(status) , handle_time = values(handle_time) , sku_img = values(sku_img) , sku_name = values(sku_name) , sku_brand = values(sku_brand) , sku_attrs_vals = values(sku_attrs_vals) , sku_count = values(sku_count) , sku_price = values(sku_price) , sku_real_price = values(sku_real_price) , reason = values(reason) , description述 = values(description述) , desc_pics = values(desc_pics) , handle_note = values(handle_note) , handle_man = values(handle_man) , receive_man = values(receive_man) , receive_time = values(receive_time) , receive_note = values(receive_note) , receive_phone = values(receive_phone) , company_address = values(company_address)     </insert>
+
+</mapper>
+
