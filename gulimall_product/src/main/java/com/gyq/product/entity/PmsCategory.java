@@ -1,8 +1,14 @@
 package com.gyq.product.entity;
 
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import lombok.Data;
+
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 商品三级分类(PmsCategory)表实体类
@@ -11,8 +17,10 @@ import java.io.Serializable;
  * @since 2022-11-14 22:52:04
  */
 @SuppressWarnings("serial")
+@Data
 public class PmsCategory extends Model<PmsCategory> {
     //分类id
+    @TableId(value = "cat_id")
     private Long catId;
     //分类名称
     private String name;
@@ -21,6 +29,7 @@ public class PmsCategory extends Model<PmsCategory> {
     //层级
     private Integer catLevel;
     //是否显示[0-不显示，1显示]
+    @TableLogic
     private Integer showStatus;
     //排序
     private Integer sort;
@@ -31,78 +40,10 @@ public class PmsCategory extends Model<PmsCategory> {
     //商品数量
     private Integer productCount;
 
+    //子分类
+    @TableField(exist = false)
+    private List<PmsCategory> children;
 
-    public Long getCatId() {
-        return catId;
-    }
-
-    public void setCatId(Long catId) {
-        this.catId = catId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getParentCid() {
-        return parentCid;
-    }
-
-    public void setParentCid(Long parentCid) {
-        this.parentCid = parentCid;
-    }
-
-    public Integer getCatLevel() {
-        return catLevel;
-    }
-
-    public void setCatLevel(Integer catLevel) {
-        this.catLevel = catLevel;
-    }
-
-    public Integer getShowStatus() {
-        return showStatus;
-    }
-
-    public void setShowStatus(Integer showStatus) {
-        this.showStatus = showStatus;
-    }
-
-    public Integer getSort() {
-        return sort;
-    }
-
-    public void setSort(Integer sort) {
-        this.sort = sort;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public String getProductUnit() {
-        return productUnit;
-    }
-
-    public void setProductUnit(String productUnit) {
-        this.productUnit = productUnit;
-    }
-
-    public Integer getProductCount() {
-        return productCount;
-    }
-
-    public void setProductCount(Integer productCount) {
-        this.productCount = productCount;
-    }
 
     /**
      * 获取主键值

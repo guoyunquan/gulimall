@@ -3,6 +3,7 @@ package com.gyq.product.dao;
 import java.util.List;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.gyq.product.dto.PmsBrandPageDto;
 import org.apache.ibatis.annotations.Param;
 import com.gyq.product.entity.PmsBrand;
 
@@ -31,5 +32,8 @@ int insertBatch(@Param("entities") List<PmsBrand> entities);
 */
 int insertOrUpdateBatch(@Param("entities") List<PmsBrand> entities);
 
+List<PmsBrand> getList(PmsBrandPageDto pmsBrandPageDto);
+
+Integer getTotal(PmsBrandPageDto pmsBrandPageDto);
 }
 

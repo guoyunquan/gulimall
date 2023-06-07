@@ -3,6 +3,11 @@ package com.gyq.product.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.gyq.common.valid.ListValue;
+import org.hibernate.validator.constraints.URL;
+
+import javax.validation.constraints.*;
 import java.io.Serializable;
 
 /**
@@ -15,18 +20,28 @@ import java.io.Serializable;
 public class PmsBrand extends Model<PmsBrand> {
     //品牌id
     @TableId
+    @JsonSerialize
     private Long brandId;
     //品牌名
+    @NotBlank(message = "品牌名不能为空")
     private String name;
     //品牌logo地址
+    @NotBlank(message = "logo图片路径不能为空")
+    @URL
     private String logo;
     //介绍
     private String descript;
     //显示状态[0-不显示；1-显示]
+    @ListValue(value = {0,1})
+    @NotNull(message = "显示状态不能为空")
     private Integer showStatus;
     //检索首字母
+    @Pattern(regexp = "^[a-zA-Z]+$", message = "首字母需要a-z或者A-Z，并且不能为空")
     private String firstLetter;
     //排序
+    @Min(0)
+    @Max(20)
+    @NotNull(message = "排序不能为空")
     private Integer sort;
 
 

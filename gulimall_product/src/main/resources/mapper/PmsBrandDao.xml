@@ -25,10 +25,33 @@
         insert into gulimall_pms.pms_brand(name, logo, descript, show_status, first_letter, sort)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.name}, #{entity.logo}, #{entity.descript}, #{entity.showStatus}, #{entity.firstLetter}, #{entity.sort})
+            (#{entity.name}, #{entity.logo}, #{entity.descript}, #{entity.showStatus}, #{entity.firstLetter},
+            #{entity.sort})
         </foreach>
         on duplicate key update
-         name = values(name) , logo = values(logo) , descript = values(descript) , show_status = values(show_status) , first_letter = values(first_letter) , sort = values(sort)     </insert>
-
+        name = values(name) , logo = values(logo) , descript = values(descript) , show_status = values(show_status) ,
+        first_letter = values(first_letter) , sort = values(sort)
+    </insert>
+    <select id="getList" resultMap="PmsBrandMap" parameterType="com.gyq.product.dto.PmsBrandPageDto">
+        select brand_id, name, logo, descript, show_status, first_letter, sort
+        from pms_brand
+        <where>
+            <if test="key != null and key != ''">
+                and (lower(first_letter) like concat('%', #{key}, '%') or
+                name like concat('%', #{key}, '%'))
+            </if>
+        </where>
+        limit #{offset},#{limit}
+    </select>
+    <select id="getTotal" parameterType="com.gyq.product.dto.PmsBrandPageDto" resultType="java.lang.Integer">
+        select count(brand_id)
+        from pms_brand
+        <where>
+            <if test="key != null and key != ''">
+                and (lower(first_letter) like concat('%', #{key}, '%') or
+                name like concat('%', #{key}, '%'))
+            </if>
+        </where>
+    </select>
 </mapper>
 

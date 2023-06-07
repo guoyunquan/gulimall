@@ -2,15 +2,20 @@ package com.gyq.product.controller;
 
 
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+
 import com.baomidou.mybatisplus.extension.api.ApiController;
-import com.baomidou.mybatisplus.extension.api.R;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+
+import com.gyq.common.PageResult;
+import com.gyq.common.R;
+import com.gyq.product.dto.PmsBrandPageDto;
 import com.gyq.product.entity.PmsBrand;
 import com.gyq.product.service.PmsBrandService;
+
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.io.Serializable;
 import java.util.List;
 
@@ -21,7 +26,7 @@ import java.util.List;
  * @since 2022-11-14 22:52:04
  */
 @RestController
-@RequestMapping("pmsBrand")
+@RequestMapping("/pmsBrand")
 public class PmsBrandController extends ApiController {
     /**
      * 服务对象
@@ -31,14 +36,13 @@ public class PmsBrandController extends ApiController {
 
     /**
      * 分页查询所有数据
-     *
-     * @param page 分页对象
-     * @param pmsBrand 查询实体
+     * @param pmsBrandPageDto 分页查询所有数据入参
      * @return 所有数据
      */
-    @GetMapping
-    public R selectAll(Page<PmsBrand> page, PmsBrand pmsBrand) {
-        return success(this.pmsBrandService.page(page, new QueryWrapper<>(pmsBrand)));
+    @PostMapping("/brand/list")
+    public R selectAll(@RequestBody PmsBrandPageDto pmsBrandPageDto) {
+        PageResult<PmsBrand> list = pmsBrandService.getAllList(pmsBrandPageDto);
+        return R.ok().put("data",list);
     }
 
     /**
@@ -47,9 +51,10 @@ public class PmsBrandController extends ApiController {
      * @param id 主键
      * @return 单条数据
      */
-    @GetMapping("{id}")
-    public R selectOne(@PathVariable Serializable id) {
-        return success(this.pmsBrandService.getById(id));
+    @GetMapping("/brand/info")
+    public R selectOne(@RequestParam("id") Serializable id) {
+        PmsBrand pmsBrand = pmsBrandService.getById(id);
+        return R.ok().put("data",pmsBrand);
     }
 
     /**
@@ -58,9 +63,10 @@ public class PmsBrandController extends ApiController {
      * @param pmsBrand 实体对象
      * @return 新增结果
      */
-    @PostMapping
-    public R insert(@RequestBody PmsBrand pmsBrand) {
-        return success(this.pmsBrandService.save(pmsBrand));
+    @PostMapping("/brand/save")
+    public R insert(@Valid @RequestBody  PmsBrand pmsBrand) {
+        pmsBrandService.save(pmsBrand);
+        return R.ok();
     }
 
     /**
@@ -69,9 +75,10 @@ public class PmsBrandController extends ApiController {
      * @param pmsBrand 实体对象
      * @return 修改结果
      */
-    @PutMapping
+    @PostMapping("/brand/update")
     public R update(@RequestBody PmsBrand pmsBrand) {
-        return success(this.pmsBrandService.updateById(pmsBrand));
+        pmsBrandService.updateById(pmsBrand);
+        return R.ok();
     }
 
     /**
@@ -80,9 +87,10 @@ public class PmsBrandController extends ApiController {
      * @param idList 主键结合
      * @return 删除结果
      */
-    @DeleteMapping
-    public R delete(@RequestParam("idList") List<Long> idList) {
-        return success(this.pmsBrandService.removeByIds(idList));
+    @PostMapping("/brand/delete")
+    public R delete(@RequestBody List<Long> idList) {
+        pmsBrandService.removeByIds(idList);
+        return R.ok();
     }
 }
 

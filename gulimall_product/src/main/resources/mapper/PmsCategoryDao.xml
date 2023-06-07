@@ -14,6 +14,8 @@
         <result property="productCount" column="product_count" jdbcType="INTEGER"/>
     </resultMap>
 
+
+
     <!-- 批量插入 -->
     <insert id="insertBatch" keyProperty="catId" useGeneratedKeys="true">
         insert into gulimall_pms.pms_category(name, parent_cid, cat_level, show_status, sort, icon, product_unit, product_count)
@@ -30,7 +32,11 @@
             (#{entity.name}, #{entity.parentCid}, #{entity.catLevel}, #{entity.showStatus}, #{entity.sort}, #{entity.icon}, #{entity.productUnit}, #{entity.productCount})
         </foreach>
         on duplicate key update
-         name = values(name) , parent_cid = values(parent_cid) , cat_level = values(cat_level) , show_status = values(show_status) , sort = values(sort) , icon = values(icon) , product_unit = values(product_unit) , product_count = values(product_count)     </insert>
+         name = values(name) , parent_cid = values(parent_cid) , cat_level = values(cat_level) , show_status = values(show_status) , sort = values(sort) , icon = values(icon) , product_unit = values(product_unit) , product_count = values(product_count) </insert>
+
+    <select id="queryAllByTree" resultType="com.gyq.product.entity.PmsCategory">
+        select * from pms_category order by sort;
+    </select>
 
 </mapper>
 

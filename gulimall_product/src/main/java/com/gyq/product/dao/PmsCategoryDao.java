@@ -31,5 +31,6 @@ int insertBatch(@Param("entities") List<PmsCategory> entities);
 */
 int insertOrUpdateBatch(@Param("entities") List<PmsCategory> entities);
 
+    List<PmsCategory> queryAllByTree();
 }
 

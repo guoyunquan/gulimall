@@ -1,17 +1,21 @@
 package com.gyq.coupon.controller;
 
 
-
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.api.ApiController;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gyq.coupon.entity.SmsCoupon;
 import com.gyq.coupon.service.SmsCouponService;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -20,6 +24,7 @@ import java.util.List;
  * @author makejava
  * @since 2022-11-14 22:57:06
  */
+@RefreshScope
 @RestController
 @RequestMapping("smsCoupon")
 public class SmsCouponController extends ApiController {
@@ -28,15 +33,39 @@ public class SmsCouponController extends ApiController {
      */
     @Resource
     private SmsCouponService smsCouponService;
+    @Value("${student.name}")
+    private String stuName;
+    @Value("${student.age}")
+    private Integer age;
+
+    @RequestMapping("/test")
+    public R test() {
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("name", stuName);
+        map.put("age", age);
+
+        return R.ok(map);
+    }
+
+
+    @RequestMapping("/member/list")
+    public R membercoupons() {
+        SmsCoupon smsCoupon = new SmsCoupon();
+        smsCoupon.setCouponName("满100减50");
+        ArrayList<Object> objects = new ArrayList<>();
+        objects.add(smsCoupon);
+        return R.ok(objects);
+    }
 
     /**
      * 分页查询所有数据
      *
-     * @param page 分页对象
+     * @param page      分页对象
      * @param smsCoupon 查询实体
      * @return 所有数据
      */
-    @GetMapping
+    @GetMapping("/all")
     public R selectAll(Page<SmsCoupon> page, SmsCoupon smsCoupon) {
         return success(this.smsCouponService.page(page, new QueryWrapper<>(smsCoupon)));
     }

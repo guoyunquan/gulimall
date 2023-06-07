@@ -1,13 +1,37 @@
+server:
+  port: 10000
+  servlet:
+    context-path: /product
 spring:
   datasource:
     username: gyq
     password: )UxHF#6r~8S`mV%e?]=q^/4d1y,fjP
     url: jdbc:mysql://101.37.252.120:3306/gulimall_pms
     driver-class-name: com.mysql.cj.jdbc.Driver
-
-
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    alicloud:
+      access-key: LTAI5tGrkd9eUVVX4KGSEzAY
+      secret-key: iHGbOqqDhJMlvD1Pd088Yld6qyEO9S
+      oss:
+        endpoint: oss-cn-hangzhou.aliyuncs.com
+  application:
+    name: gulimall-product
 mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath:/mapper/**/*.xml
   global-config:
     db-config:
       id-type: auto
+      logic-delete-flied: show_status
+      logic-delete-value: 0 # 逻辑已删除值(默认为 1)不显示数据
+      logic-not-delete-value: 1 # 逻辑未删除值(默认为 0)显示数据
+#alibaba:
+#  cloud:
+#    access-key: LTAI5tGrkd9eUVVX4KGSEzAY
+#    secret-key: iHGbOqqDhJMlvD1Pd088Yld6qyEO9S
+#    oss:
+#      endpoint: oss-cn-hangzhou.aliyuncs.com

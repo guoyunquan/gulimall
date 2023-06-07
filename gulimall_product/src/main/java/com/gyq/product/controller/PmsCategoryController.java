@@ -2,16 +2,18 @@ package com.gyq.product.controller;
 
 
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+
 import com.baomidou.mybatisplus.extension.api.ApiController;
-import com.baomidou.mybatisplus.extension.api.R;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+
+import com.gyq.common.R;
 import com.gyq.product.entity.PmsCategory;
 import com.gyq.product.service.PmsCategoryService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
+
 import java.util.List;
 
 /**
@@ -21,7 +23,7 @@ import java.util.List;
  * @since 2022-11-14 22:52:04
  */
 @RestController
-@RequestMapping("pmsCategory")
+@RequestMapping("/pmsCategory")
 public class PmsCategoryController extends ApiController {
     /**
      * 服务对象
@@ -30,15 +32,13 @@ public class PmsCategoryController extends ApiController {
     private PmsCategoryService pmsCategoryService;
 
     /**
-     * 分页查询所有数据
-     *
-     * @param page 分页对象
-     * @param pmsCategory 查询实体
-     * @return 所有数据
+     * 查询所有数据
+     * 按照树形结构分别查询出一级，二级，三级菜单所有的数据
      */
-    @GetMapping
-    public R selectAll(Page<PmsCategory> page, PmsCategory pmsCategory) {
-        return success(this.pmsCategoryService.page(page, new QueryWrapper<>(pmsCategory)));
+    @GetMapping("/all/tree")
+    public R selectAll() {
+        List<PmsCategory> categoryList = pmsCategoryService.listWithTree();
+        return R.ok().put("data", categoryList);
     }
 
     /**
@@ -49,7 +49,8 @@ public class PmsCategoryController extends ApiController {
      */
     @GetMapping("{id}")
     public R selectOne(@PathVariable Serializable id) {
-        return success(this.pmsCategoryService.getById(id));
+        PmsCategory category = pmsCategoryService.getById(id);
+        return R.ok().put("data", category);
     }
 
     /**
@@ -58,9 +59,10 @@ public class PmsCategoryController extends ApiController {
      * @param pmsCategory 实体对象
      * @return 新增结果
      */
-    @PostMapping
+    @PostMapping("/add")
     public R insert(@RequestBody PmsCategory pmsCategory) {
-        return success(this.pmsCategoryService.save(pmsCategory));
+        pmsCategoryService.save(pmsCategory);
+        return R.ok();
     }
 
     /**
@@ -69,9 +71,10 @@ public class PmsCategoryController extends ApiController {
      * @param pmsCategory 实体对象
      * @return 修改结果
      */
-    @PutMapping
+    @PostMapping("/update")
     public R update(@RequestBody PmsCategory pmsCategory) {
-        return success(this.pmsCategoryService.updateById(pmsCategory));
+        pmsCategoryService.updateById(pmsCategory);
+        return R.ok();
     }
 
     /**
@@ -80,9 +83,10 @@ public class PmsCategoryController extends ApiController {
      * @param idList 主键结合
      * @return 删除结果
      */
-    @DeleteMapping
-    public R delete(@RequestParam("idList") List<Long> idList) {
-        return success(this.pmsCategoryService.removeByIds(idList));
+    @PostMapping("/delete")
+    public R delete(@RequestBody List<Long> idList) {
+        pmsCategoryService.deleteMenuByIds(idList);
+        return R.ok();
     }
 }
 
