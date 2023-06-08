@@ -1,5 +1,9 @@
 package com.gyq.thirdParty.controller;
 
+import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.crypto.SecureUtil;
+import cn.hutool.crypto.symmetric.AES;
+import cn.hutool.crypto.symmetric.SymmetricAlgorithm;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSClientBuilder;
@@ -65,7 +69,9 @@ public class OssController {
             String postSignature = ossClient.calculatePostSignature(postPolicy);
 
             respMap = new LinkedHashMap<String, String>();
-            respMap.put("accessid", accessId);
+            byte[] key = SecureUtil.generateKey(SymmetricAlgorithm.AES.getValue()).getEncoded();
+            AES aes = SecureUtil.aes(key);
+            respMap.put("accessid", aes.decryptStr(accessId, CharsetUtil.CHARSET_UTF_8));
             respMap.put("policy", encodedPolicy);
             respMap.put("signature", postSignature);
             respMap.put("dir", dir);
@@ -81,5 +87,9 @@ public class OssController {
             System.out.println(e.getMessage());
         }
         return map;
+    }
+
+    public static void main(String[] args) {
+
     }
 }
