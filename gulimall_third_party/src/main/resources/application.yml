@@ -6,11 +6,13 @@ spring:
   application:
     name: gulimall-third-party
     alicloud:
-      access-key: f3192e0e809e73e36dcd2dda7411b2585b2ae37921d168a44cdf4b2f75fdb84c
-      secret-key: 943fe38ef544de874878b4f1657f532a474689fc8ee6fa954ba55e3e874191f9
+      access-key: a66288b1b2f8d0422cc022b9ee057fd20a66cbb5a6960733322f841bf28323a5
+      secret-key: a13f336bdfc0324d9c63512996b86c34e596ca372bf9ec3e859f99d23d31af0c
       oss:
         endpoint: oss-cn-hangzhou.aliyuncs.com
         bucket: gulimall-gyq123
 server:
   port: 30000
+# 加密解密的盐
+salt: RienYpky0ZdUgf2V
 

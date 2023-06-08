@@ -2,6 +2,9 @@ package com.gyq.thirdParty.controller;
 
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.crypto.SecureUtil;
+import cn.hutool.crypto.SmUtil;
+import cn.hutool.crypto.digest.DigestUtil;
+import cn.hutool.crypto.digest.Digester;
 import cn.hutool.crypto.symmetric.AES;
 import cn.hutool.crypto.symmetric.SymmetricAlgorithm;
 import com.aliyun.oss.OSS;
@@ -10,6 +13,7 @@ import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.common.utils.BinaryUtil;
 import com.aliyun.oss.model.MatchMode;
 import com.aliyun.oss.model.PolicyConditions;
+import com.gyq.common.util.EncryptUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +42,8 @@ public class OssController {
     private String bucket;
     @Value("${spring.application.alicloud.access-key}")
     private String accessId;
+    @Value("${salt}")
+    private String salt;
 
     /**
      * oss生成签名 作用于上传数据到oss
@@ -69,9 +75,7 @@ public class OssController {
             String postSignature = ossClient.calculatePostSignature(postPolicy);
 
             respMap = new LinkedHashMap<String, String>();
-            byte[] key = SecureUtil.generateKey(SymmetricAlgorithm.AES.getValue()).getEncoded();
-            AES aes = SecureUtil.aes(key);
-            respMap.put("accessid", aes.decryptStr(accessId, CharsetUtil.CHARSET_UTF_8));
+            respMap.put("accessid", EncryptUtil.decode(accessId,salt));
             respMap.put("policy", encodedPolicy);
             respMap.put("signature", postSignature);
             respMap.put("dir", dir);
@@ -90,6 +94,30 @@ public class OssController {
     }
 
     public static void main(String[] args) {
+        String s = "LTAI5tGrkd9eUVVX4KGSEzAY";
+        //byte[] key = SecureUtil.generateKey(SymmetricAlgorithm.AES.getValue()).getEncoded();
+      //  byte[] key = SecureUtil.generateKey("AES").getEncoded();
+        // 构建
+        byte[] key = "ABIEeUXtP0ODaJQu".getBytes();
+        AES aes = SecureUtil.aes(key);
+        // 加密为16进制表示
+        String encryptHex = aes.encryptHex(s);
+        System.out.println(encryptHex);
+        String decryptStr = aes.decryptStr(encryptHex, CharsetUtil.CHARSET_UTF_8);
+        System.out.println(decryptStr);
+
+
+        //结果为：136ce3c86e4ed909b76082055a61586af20b4dab674732ebd4b599eef080c9be
+        Digester digester = DigestUtil.digester("sm3");
+
+//136ce3c86e4ed909b76082055a61586af20b4dab674732ebd4b599eef080c9be
+       // String digestHex = digester.digestHex("aaaaa");
+
+        //String digestHex = SmUtil.sm3("aaaaa");
+        //System.out.println(digestHex);
+     //   String digest = digester.digest(digestHex);
+
+
 
     }
 }
